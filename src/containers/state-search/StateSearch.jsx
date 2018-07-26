@@ -18,26 +18,49 @@ export const MODES = {
 
 @observer
 export default class StateSearch extends Component {
+  static isNotUniqueStateCode(collection, code) {
+    return collection.items.some(item => item.value.zipCode === code);
+  }
   constructor() {
     super();
     this.state = {
       mode: MODES.CREATION,
       code: '',
-      // selectedState: null,
+      selectedState: null,
     };
     this.statesCollection = new Collection();
   }
   handleSelect(item) {
-    this.setState({
-      code: item.value.zipCode,
-    });
+    const code = item ? item.value.zipCode : '';
+    const selectedState = item ? item.value : null;
+    const mode = (code && selectedState) ? MODES.EDITING : MODES.CREATION;
+    this.setState({ code, selectedState, mode });
   }
   handleSubmit() {
     let { code } = this.state;
+    const { mode, selectedState } = this.state;
 
     if (!code) return;
     code = code.trim();
-    zip.getState(code)
+    if (mode === MODES.CREATION) {
+      this.addState(code);
+    } else {
+      this.updateState(code, selectedState);
+    }
+  }
+  updateState(code, state) {
+    return zip.getState(code)
+      .then(data => state.update(data))
+      .then(() => {
+        this.setState({ code: '' });
+      });
+  }
+  addState(code) {
+    const { isNotUniqueStateCode } = StateSearch;
+    if (isNotUniqueStateCode(this.statesCollection, code)) {
+      return Promise.resolve();
+    }
+    return zip.getState(code)
       .then(data => new State(data))
       .then(state => new CollectionItem({
         value: state,
@@ -48,7 +71,9 @@ export default class StateSearch extends Component {
       });
   }
   handleCodeChange(code) {
-    this.setState({ code });
+    const { selectedState } = this.state;
+    const mode = (code && selectedState) ? MODES.EDITING : MODES.CREATION;
+    this.setState({ code, mode });
   }
   render() {
     const { className } = this.props;

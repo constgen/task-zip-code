@@ -10,9 +10,16 @@ export default class SelectionList extends Component {
     super(props);
     this.collection = props.collection;
   }
-  handleSelect(item, index) {
-    this.collection.selectedIndex = index;
-    this.props.onSelect(item, index);
+  handleSelect(event, item, index) {
+    const shouldDeselectIndex = (this.collection.selectedIndex === index);
+    event.preventDefault();
+    if (shouldDeselectIndex) {
+      this.collection.selectedIndex = -1;
+      this.props.onSelect(null, -1);
+    } else {
+      this.collection.selectedIndex = index;
+      this.props.onSelect(item, index);
+    }
   }
   render() {
     const { className, Item } = this.props;
@@ -22,13 +29,11 @@ export default class SelectionList extends Component {
         {this.collection.items.map((item, index) => (
           <li
             className={item.selected ? SELECTED_CLASS_NAME : ''}
-            onClick={() => this.handleSelect(item, index)}
-            onKeyDown={noop}
-            tabIndex="0"
-            role="link" // eslint-disable-line
             key={item.id}
           >
-            <Item value={item.value} />
+            <a href="/" onClick={event => this.handleSelect(event, item, index)}>
+              <Item value={item.value} />
+            </a>
           </li>
         ))}
       </ul >

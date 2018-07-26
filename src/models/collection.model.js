@@ -23,7 +23,9 @@ export default class Collection {
     if (this.items[selectedIndex]) {
       this.items[selectedIndex].selected = false;
     }
-    this.items[index].selected = true;
+    if (this.items[index]) {
+      this.items[index].selected = true;
+    }
   }
   @action add(item) {
     item.id = this.length; // eslint-disable-line no-param-reassign
