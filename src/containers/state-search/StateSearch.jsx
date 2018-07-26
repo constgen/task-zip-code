@@ -4,7 +4,11 @@ import PropTypes from 'prop-types';
 
 import SelectionList from '../../components/selection-list/SelectionList';
 import { Form, Label, Input, Button } from '../../components/form/Form';
+import StateInfo from '../../components/state-info/StateInfo';
 import zip from '../../services/zip.service';
+import Collection from '../../models/collection.model';
+import CollectionItem from '../../models/collection-item.model';
+import State from '../../models/state.model';
 import './state-search.css';
 
 export const MODES = {
@@ -19,17 +23,32 @@ export default class StateSearch extends Component {
     this.state = {
       mode: MODES.CREATION,
       code: '',
+      // selectedState: null,
     };
+    this.statesCollection = new Collection();
   }
-  handleSelect() {
-    this.setState({});
+  handleSelect(item) {
+    this.setState({
+      code: item.value.zipCode,
+    });
   }
   handleSubmit() {
-    this.setState({});
+    let { code } = this.state;
+
+    if (!code) return;
+    code = code.trim();
+    zip.getState(code)
+      .then(data => new State(data))
+      .then(state => new CollectionItem({
+        value: state,
+      }))
+      .then((item) => {
+        this.statesCollection.add(item);
+        this.setState({ code: '' });
+      });
   }
   handleCodeChange(code) {
     this.setState({ code });
-    zip.getState(code).then(console.log);
   }
   render() {
     const { className } = this.props;
@@ -49,7 +68,7 @@ export default class StateSearch extends Component {
           <Button type="submit">{mode === MODES.CREATION ? 'Add' : 'Save'}</Button>
         </Form>
 
-        <SelectionList className="results" onSelect={e => this.handleSelect(e)} />
+        <SelectionList collection={this.statesCollection} Item={StateInfo} className="results" onSelect={item => this.handleSelect(item)} />
       </div >
     );
   }

@@ -1,2 +1,11 @@
 .component-selection-list {
 }
+
+.component-selection-list > li {
+  margin-bottom: 0.5em;
+  cursor: pointer;
+}
+
+.component-selection-list > li.selected {
+  color: #f29723;
+}

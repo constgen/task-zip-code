@@ -30,5 +30,11 @@
       ".js",
       ".jsx"
     ]
-  }
+  },
+  "spellright.language": "en",
+  "spellright.documentTypes": [
+    "markdown",
+    "latex",
+    "plaintext"
+  ]
 }
