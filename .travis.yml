@@ -1,0 +1,19 @@
+language: node_js
+node_js:
+  - "8.11"
+install:
+  - npm install
+cache:
+  directories:
+  - node_modules
+script:
+  - npm run build
+deploy:
+  provider: releases
+  api_key: "$GITHUB_AUTH_TOKEN"
+  file_glob: true
+  file: "build/*"
+  overwrite: true
+  skip_cleanup: true
+  on:
+    branch: master
