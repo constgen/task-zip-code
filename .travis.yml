@@ -8,6 +8,11 @@ cache:
   - node_modules
 script:
   - npm run build
+notifications:
+  email:
+    on_pull_requests: false
+    on_success: never
+    on_failure: never
 deploy:
   provider: releases
   api_key: "$GITHUB_AUTH_TOKEN"
