@@ -14,11 +14,10 @@ notifications:
     on_success: never
     on_failure: never
 deploy:
-  provider: releases
-  api_key: "$GITHUB_AUTH_TOKEN"
-  file_glob: true
-  file: "build/*"
-  overwrite: true
+  provider: pages
   skip_cleanup: true
+  github_token: $GITHUB_AUTH_TOKEN
+  local_dir: build
+  verbose: true
   on:
     branch: master
