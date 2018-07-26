@@ -1,0 +1,21 @@
+.component-label {
+  display: inline-block;
+  vertical-align: baseline;
+  margin-bottom: 20px;
+  margin-right: 20px;
+  text-align: left;
+  line-height: 34px;
+}
+
+.component-label::before {
+  font-weight: normal;
+  font-size: 13px;
+  color: #b4b6bc;
+  white-space: normal;
+  line-height: 1.2;
+}
+
+.component-label > .title {
+  display: block;
+  margin-bottom: 3px;
+}

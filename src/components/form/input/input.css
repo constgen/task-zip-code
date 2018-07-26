@@ -1,0 +1,45 @@
+.component-input {
+  display: inline-block;
+  vertical-align: middle;
+  box-sizing: border-box;
+  height: 34px;
+  width: 226px;
+  background: #fff;
+  border-radius: 4px;
+  border: 1px solid #d4d6db;
+  font-family: inherit;
+  color: inherit;
+  font-size: 14px;
+  line-height: 18px;
+  padding: 8px 15px;
+  margin: 0;
+  text-align: left;
+  cursor: text;
+  background-repeat: no-repeat;
+  background-size: 15px;
+  background-position: calc(100% - 15px) 10px;
+}
+
+.component-input:focus {
+  box-shadow: 0 0 4px 0 rgba(242, 151, 35, 0.25);
+  border: solid 1px #f29723;
+  outline: transparent;
+}
+
+.component-input[disabled] {
+  opacity: 0.5;
+  background-color: #f4f5f7;
+  border-color: #d4d6db;
+}
+
+.component-input::placeholder {
+  color: #b4b6bc;
+}
+
+.component-input.invalid {
+  background-color: #fefafa;
+  border-color: #ec596a;
+  background-image: url(images/icon-validation-warning.svg);
+  padding-right: 40px;
+}
+
